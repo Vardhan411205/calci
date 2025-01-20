@@ -506,40 +506,6 @@
             updateDisplay();
             document.getElementById('result').textContent = `Result: ${result}`;
         }
-
-        // Modify your existing scientific function
-        function scientific(func) {
-            if (currentInput === '') return;
-            const num = parseFloat(currentInput);
-            let result;
-            
-            const button = findButton({
-                'sqrt': '√',
-                'pow': 'xʸ',
-                'log': 'log',
-                'ln': 'ln',
-                'sin': 'sin',
-                'cos': 'cos',
-                'tan': 'tan',
-                'pi': 'π',
-                'exp': 'exp',
-                'square': 'x²',
-                'mod': 'mod'
-            }[func]);
-            
-            if (button) buttonAnimation(button);
-
-            switch (func) {
-                // Your existing switch cases remain the same
-            }
-
-            const rect = button.getBoundingClientRect();
-            createGhostNumber(result, rect.left + rect.width / 2, rect.top + rect.height / 2);
-
-            currentInput = result.toString();
-            updateDisplay();
-            document.getElementById('result').textContent = `Result: ${result}`;
-        }
     </script>
 </body>
 </html>
