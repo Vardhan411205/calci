@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enhanced Scientific Calculator</title>
+    <title>Scientific Calculator</title>
     <style>
         * {
             box-sizing: border-box;
@@ -83,9 +84,17 @@
         }
 
         @keyframes buttonPress {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.95); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(0.8);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         .floating-symbol {
@@ -102,11 +111,10 @@
                 transform: translate(-50%, -50%) scale(0.5);
                 opacity: 1;
             }
+
             100% {
-                transform: translate(
-                    calc(var(--x-end) * 100px),
-                    calc(var(--y-end) * 100px)
-                ) scale(1.5);
+                transform: translate(calc(var(--x-end) * 100px),
+                        calc(var(--y-end) * 100px)) scale(1.5);
                 opacity: 0;
             }
         }
@@ -133,12 +141,15 @@
                 transform: translate(var(--start-x), var(--start-y)) rotate(0deg);
                 opacity: 0;
             }
+
             20% {
                 opacity: 1;
             }
+
             80% {
                 opacity: 1;
             }
+
             100% {
                 transform: translate(var(--end-x), var(--end-y)) rotate(360deg);
                 opacity: 0;
@@ -167,10 +178,12 @@
                 transform: translate(-50%, -50%) scale(1);
                 opacity: 0.9;
             }
+
             50% {
                 transform: translate(-50%, -100px) scale(1.5);
                 opacity: 0.5;
             }
+
             100% {
                 transform: translate(-50%, -200px) scale(2);
                 opacity: 0;
@@ -183,26 +196,25 @@
                 transform: translate(-50%, -50%) scale(0.5);
                 opacity: 1;
             }
+
             50% {
-                transform: translate(
-                    calc(var(--x-end) * 150px),
-                    calc(var(--y-end) * 150px)
-                ) scale(1.2);
+                transform: translate(calc(var(--x-end) * 150px),
+                        calc(var(--y-end) * 150px)) scale(1.2);
                 opacity: 0.5;
             }
+
             100% {
-                transform: translate(
-                    calc(var(--x-end) * 300px),
-                    calc(var(--y-end) * 300px)
-                ) scale(2);
+                transform: translate(calc(var(--x-end) * 300px),
+                        calc(var(--y-end) * 300px)) scale(2);
                 opacity: 0;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="background-math" id="mathBackground"></div>
-    
+
     <div class="calculator">
         <h1>Calculator</h1>
         <input type="text" id="display" class="display" disabled />
@@ -242,8 +254,8 @@
     <script>
         let currentInput = '';
         let currentOperation = null;
-        const mathSymbols = ['1','2','3','4','5','6','7','8','9','0','÷', '×', '+', '-', '=', '√', 'π', '∑', '∫', '∞', '≠', '≈', '≤', '≥'];
-        
+        const mathSymbols = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '÷', '×', '+', '-', '=', '√', 'π', '∑', '∫', '∞', '≠', '≈', '≤', '≥'];
+
         function createFloatingSymbol(symbol, x, y) {
             const element = document.createElement('div');
             element.className = 'floating-symbol';
@@ -253,7 +265,7 @@
             element.style.setProperty('--x-end', (Math.random() * 2 - 1));
             element.style.setProperty('--y-end', (Math.random() * 2 - 1));
             document.body.appendChild(element);
-            
+
             setTimeout(() => element.remove(), 100);
         }
 
@@ -262,23 +274,23 @@
             const element = document.createElement('div');
             element.className = 'math-symbol';
             element.textContent = symbol;
-            
+
             const startPosition = Math.random() * 360;
             const distance = Math.min(window.innerWidth, window.innerHeight) / 2;
-            
+
             const startX = window.innerWidth / 2 + Math.cos(startPosition) * 10;
             const startY = window.innerHeight / 2 + Math.sin(startPosition) * 10;
-            
+
             const endX = window.innerWidth / 2 + Math.cos(startPosition) * distance;
             const endY = window.innerHeight / 2 + Math.sin(startPosition) * distance;
-            
+
             element.style.setProperty('--start-x', `${startX}px`);
             element.style.setProperty('--start-y', `${startY}px`);
             element.style.setProperty('--end-x', `${endX}px`);
             element.style.setProperty('--end-y', `${endY}px`);
-            
+
             document.getElementById('mathBackground').appendChild(element);
-            
+
             setTimeout(() => element.remove(), 8000);
         }
 
@@ -303,10 +315,10 @@
         function appendValue(value) {
             const button = findButton(value);
             if (button) buttonAnimation(button);
-            
+
             const rect = button.getBoundingClientRect();
             createFloatingSymbol(value, rect.left + rect.width / 2, rect.top + rect.height / 2);
-            
+
             currentInput += value;
             updateDisplay();
         }
@@ -314,11 +326,11 @@
         function setOperation(operation) {
             const button = findButton(operation === '*' ? '×' : operation);
             if (button) buttonAnimation(button);
-            
+
             if (currentInput !== '') {
                 const rect = button.getBoundingClientRect();
                 createFloatingSymbol(operation, rect.left + rect.width / 2, rect.top + rect.height / 2);
-                
+
                 currentInput += ` ${operation} `;
                 updateDisplay();
             }
@@ -326,10 +338,10 @@
 
         function calculate() {
             if (currentInput === '') return;
-            
+
             const button = findButton('=');
             if (button) buttonAnimation(button);
-            
+
             let result;
             try {
                 result = eval(currentInput);
@@ -339,7 +351,7 @@
 
             const rect = button.getBoundingClientRect();
             createFloatingSymbol('=', rect.left + rect.width / 2, rect.top + rect.height / 2);
-            
+
             currentInput = result.toString();
             updateDisplay();
             document.getElementById('result').textContent = `Result: ${result}`;
@@ -349,7 +361,7 @@
             if (currentInput === '') return;
             const num = parseFloat(currentInput);
             let result;
-            
+
             const button = findButton({
                 'sqrt': '√',
                 'pow': 'xʸ',
@@ -363,7 +375,7 @@
                 'square': 'x²',
                 'mod': 'mod'
             }[func]);
-            
+
             if (button) buttonAnimation(button);
 
             switch (func) {
@@ -417,16 +429,16 @@
         function clearDisplay() {
             const button = findButton('C');
             if (button) buttonAnimation(button);
-            
+
             currentInput = '';
             currentOperation = null;
             updateDisplay();
             document.getElementById('result').textContent = 'Result: N/A';
         }
 
-        document.addEventListener('keydown', function(event) {
+        document.addEventListener('keydown', function (event) {
             const key = event.key;
-            
+
             if (key >= '0' && key <= '9') {
                 appendValue(key);
             } else if (key === '+') {
@@ -456,10 +468,10 @@
             ghost.style.left = x + 'px';
             ghost.style.top = y + 'px';
             document.body.appendChild(ghost);
-            
+
             setTimeout(() => ghost.remove(), 1000);
         }
-        
+
         // Add this new function after your existing functions
         function createGhostNumber(number, x, y) {
             const ghost = document.createElement('div');
@@ -468,7 +480,7 @@
             ghost.style.left = x + 'px';
             ghost.style.top = y + 'px';
             document.body.appendChild(ghost);
-            
+
             setTimeout(() => ghost.remove(), 1000);
         }
 
@@ -480,7 +492,7 @@
                 const rect = button.getBoundingClientRect();
                 createGhostNumber(value, rect.left + rect.width / 2, rect.top + rect.height / 2);
             }
-            
+
             currentInput += value;
             updateDisplay();
         }
@@ -488,10 +500,10 @@
         // Modify your existing calculate function
         function calculate() {
             if (currentInput === '') return;
-            
+
             const button = findButton('=');
             if (button) buttonAnimation(button);
-            
+
             let result;
             try {
                 result = eval(currentInput);
@@ -501,11 +513,12 @@
 
             const rect = button.getBoundingClientRect();
             createGhostNumber(result, rect.left + rect.width / 2, rect.top + rect.height / 2);
-            
+
             currentInput = result.toString();
             updateDisplay();
             document.getElementById('result').textContent = `Result: ${result}`;
         }
     </script>
 </body>
+
 </html>
